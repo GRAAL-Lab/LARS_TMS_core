@@ -128,13 +128,7 @@ Clone the repository into a ROS 2 workspace:
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
 git clone https://github.com/GRAAL-Lab/LARS_TMS_core.git
-cd ~/ros2_ws
-rosdep install --from-paths src --ignore-src -r -y
-colcon build --symlink-install
-source install/setup.bash
 ```
-
-If you are missing ROS dependencies, install them with `rosdep` or by installing the appropriate ROS 2 packages for your distribution.
 
 ## Building the packages
 
@@ -145,15 +139,6 @@ cd ~/ros2_ws
 colcon build --symlink-install
 ```
 
-To build a single package:
-
-```bash
-cd ~/ros2_ws
-colcon build --packages-select cpp_mavlink
-colcon build --packages-select mavlink_msg
-colcon build --packages-select mcc118_driver
-```
-
 ## Running the nodes
 
 ### MAVLink bridge
@@ -161,17 +146,8 @@ colcon build --packages-select mcc118_driver
 Launch the MAVLink publisher node:
 
 ```bash
-ros2 run cpp_mavlink mavlink_publisher --ros-args \
-  -p bind_address:=0.0.0.0 \
-  -p port:=14551 \
-  -p topic_prefix:=/bluerov2
+ros2 run cpp_mavlink mavlink_publisher -
 ```
-
-Default values used by the package are typically:
-
-- bind address: `0.0.0.0`
-- port: `14551`
-- topic prefix: `/bluerov2`
 
 ### MCC118 driver
 
@@ -216,39 +192,6 @@ This is a `geometry_msgs/msg/WrenchStamped`, which contains:
 - `wrench.force.y`
 - `wrench.force.z` (if used by the wider system)
 
-## Notes on calibration and operation
-
-The MCC 118 driver performs raw-to-engineering conversion and applies calibration values for the attached sensors. In the current implementation, the driver uses a scaling factor and a calibration coefficient during device initialization.
-
-This means:
-
-- calibration values may need to be adjusted for the specific sensor setup,
-- the driver is intended for a specific hardware configuration,
-- the DAQ board must be installed and accessible on the target machine.
-
-## Development notes
-
-This repository is a compact ROS-based integration layer and is best understood as a set of mission-specific packages rather than a generic robotics library.
-
-The code is structured around:
-
-- data acquisition from external hardware,
-- conversion to ROS messages,
-- simple publication to ROS topics for system integration.
-
-## Troubleshooting
-
-### Build issues
-
-- Ensure you are using a ROS 2 environment with the required dependencies installed.
-- Run `rosdep install --from-paths src --ignore-src -r -y` to install missing packages.
-- Verify that `mavlink` and the MCC DAQ HAT libraries are installed on the host machine.
-
-### Runtime issues
-
-- Check that the MCC 118 device is detected and visible to the host system.
-- Confirm that the DAQ HAT SDK is installed in `/usr/local/include` and `/usr/local/lib`.
-- Use `ros2 topic list` and `ros2 topic echo <topic_name>` to verify published data.
 
 ## License
 
