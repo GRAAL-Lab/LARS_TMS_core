@@ -102,8 +102,8 @@ int main(int argc, char * argv[])
     printf("    Actual scan rate: %-10.2f\n", actual_scan_rate);
     printf("    Options: %s\n", options_str);
 
-    printf("\nPress ENTER to continue ...\n");
-    scanf("%c", &c);
+    //printf("\nPress ENTER to continue ...\n");
+    //scanf("%c", &c);
     
     re = mcc118_calibration_coefficient_write(address, CHAN1, slope_n, offset_n);
     printf("Write result: %d\n", re);
@@ -121,18 +121,18 @@ int main(int argc, char * argv[])
     result = mcc118_a_in_scan_start(address, channel_mask, samples_per_channel, scan_rate, options);
     STOP_ON_ERROR(result);
     STOP_ON_ERROR(mcc118_a_in_scan_buffer_size(address, &internal_buffer_size_samples));
-    printf("Internal data buffer size:  %d\n", internal_buffer_size_samples);
-    printf("\nStarting scan ... Press ENTER to stop\n\n");
+    printf("\nInternal data buffer size:  %d\n", internal_buffer_size_samples);
+    //printf("\nStarting scan ... Press ENTER to stop\n\n");
 
     // Create the header containing the column names.
-    strcpy(display_header, "Samples Read    Scan Count    ");
-    for (i = 0; i < num_channels; i++)
-    {
-        sprintf(channel_string, "Channel %d   ", channel_array[i]);
-        strcat(display_header, channel_string);
-    }
-    strcat(display_header, "\n");
-    printf("%s", display_header);
+    //strcpy(display_header, "Samples Read    Scan Count    ");
+    //for (i = 0; i < num_channels; i++)
+    //{
+    //    sprintf(channel_string, "Channel %d   ", channel_array[i]);
+    //    strcat(display_header, channel_string);
+    //}
+    //strcat(display_header, "\n");
+    //printf("%s", display_header);
 
     // Continuously update the display value until enter key is pressed
     do 
@@ -157,7 +157,7 @@ int main(int argc, char * argv[])
         total_samples_read += samples_read_per_channel;
 
         // Display and publish the latest sample from each channel.
-        printf("\r%12d    %10d ", samples_read_per_channel, total_samples_read);
+        //printf("\r%12d    %10d ", samples_read_per_channel, total_samples_read);
 
         if (samples_read_per_channel > 0)
         {
@@ -183,7 +183,7 @@ int main(int argc, char * argv[])
                 double measurement = 20.0 * read_buf[index + i];
 
                 // Print the measurement.
-                printf(" Ch%d: %10.5f N", channel_array[i], measurement);
+                //printf(" Ch%d: %10.5f N", channel_array[i], measurement);
 
                 // Store the measurement in the ROS 2 message.
                 //msg.data[i] = measurement;
@@ -208,10 +208,11 @@ int main(int argc, char * argv[])
         // Allow ROS 2 to process pending work.
         rclcpp::spin_some(node);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     } 
-    while ((result == RESULT_SUCCESS) && ((read_status & STATUS_RUNNING) == STATUS_RUNNING) && !enter_press());
+    //while ((result == RESULT_SUCCESS) && ((read_status & STATUS_RUNNING) == STATUS_RUNNING) && !enter_press());
+    while ((result == RESULT_SUCCESS) && ((read_status & STATUS_RUNNING) == STATUS_RUNNING));
 
     printf("\n");
 

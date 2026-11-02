@@ -218,6 +218,12 @@ rosdep install --from-paths src --ignore-src -r -y
 colcon build --symlink-install
 source install/setup.bash
 
+# Run the launch file
+ros2 launch mcc118_driver launchPublisher.py
+```
+or run the nodes separately
+```bash
+
 # Run the MAVLink bridge
 ros2 run cpp_mavlink mavlink_publisher
 
