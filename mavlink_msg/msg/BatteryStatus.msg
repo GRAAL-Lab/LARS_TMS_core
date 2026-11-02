@@ -1,0 +1,15 @@
+std_msgs/Header header
+uint8 id
+uint8 battery_function
+uint8 type
+int16 temperature
+uint16[10] voltages
+int16 current_battery
+int32 current_consumed
+int32 energy_consumed
+int8 battery_remaining
+int32 time_remaining
+uint8 charge_state
+uint16[4] voltages_ext
+uint8 mode
+uint32 fault_bitmask
